@@ -6,7 +6,7 @@
 
 ### \##Description
 
-This Project is an Arduino based Radar System that detects object using an Ultrasonic sensor and it can measure distance, estimate object size and calculate speed in real time. this system is useful for educational purposes, robotics and small automation projects.
+This Project is an Arduino based Radar System that detects object using an Ultrasonic sensor and it can measure distance, estimate object size and calculate speed in real time. this system is useful for educational purposes, robotics and small automation projects. Designed and implemented as part of a practical exploration of optical wireless communication systems
 
 
 
