@@ -25,7 +25,7 @@ void setup() {
   pinMode(trigPin, OUTPUT); // OUTPUT because it send out the signal
   pinMode(echoPin, INPUT); // INPUT because it recieves the signal
   Serial.println("---- Arduino Radar System ----");
-  Serial.println("Format: [Angle °] [Distance cm] [Size] [Speed cm/s]");
+  Serial.println("Format: [Angle °] [Distance cm] [Proximity] [Speed cm/s]");
 }
 
 long getDistance() {
@@ -39,10 +39,10 @@ long getDistance() {
   return d * 0.034 / 2; // cm
 }
 // Object Size
-String getObjectSize(int dist) {
-  if (dist < 20) return "NARROW";
-  else if (dist < 50) return "MEDIUM";
-  else return "WIDE";
+String proximity = getProximityCategory(int dist) {
+  if (dist < 20) return "NEAR";
+  else if (dist < 50) return "MID";
+  else return "FAR";
 }
 
 void loop() {
@@ -51,7 +51,7 @@ void loop() {
   
   if (currentTime - lastTime >= scanDelay) {
     lastTime = currentTime;
-  }
+  
     // Sweep servo
     if (sweepForward) {
       angle += step;
@@ -80,6 +80,7 @@ void loop() {
     // Print in clear format
     Serial.print("Angle: "); Serial.print(angle); Serial.print("° | ");
     Serial.print("Distance: "); Serial.print(distance); Serial.print(" cm | ");
-    Serial.print("Size: "); Serial.print(size); Serial.print(" | ");
+    Serial.print("Proximity: "); Serial.print(Proximity); Serial.print(" | ");
     Serial.print("Speed: "); Serial.print(speed, 2); Serial.println(" cm/s");
   }
+}
