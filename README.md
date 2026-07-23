@@ -1,4 +1,4 @@
-# Ultrasonic Object Scnner
+# Ultrasonic Object Scanner
 An Arduino based scanning system that uses an ultrasonic sensor mounted on a servo motor to sweep a field of view and detect object distance, size and speed at each angle - an early exercise in sensor-based ranging and embedded control, foundational is later work in RF/signal-based sensing systems.
 
 ## Overview
