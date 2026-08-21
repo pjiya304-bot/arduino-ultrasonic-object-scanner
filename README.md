@@ -34,7 +34,7 @@ Core functions:
 ## Limitations and Observations
 Distance detection works reliably and consistently. A few things worth noting;
 - **Proximity, not size:** the current version classifies objects into NEAR/MID/FAR bands based on the distance fromthe sensor - it doesnot measure actual physical size. A true size estimate would require tracking angular span across a sweep (i.e. how many consecutive angles detect the same object), which is a planned future improvement rather than a current feature.
-- **Timing bug found and fixed:** an earlier version of the loop had a scoping error where the scan-interval check ('scanDelay') wasn't actually gating the sweep/measurement logic, causing readings to run on every loop iteration instead of at the intended interval - this was corrupting speed calculations, since the speed was being divided by an assumed 4-second interval thatwasn't the real time between readings. This has since been fixed.
+- **Timing bug found and fixed:** an earlier version of the loop had a scoping error where the scan-interval check ('scanDelay') wasn't actually gating the sweep/measurement logic, causing readings to run on every loop iteration instead of at the intended interval - this was corrupting speed calculations, since the speed was being divided by an assumed 4-second interval that wasn't the real time between readings. This has since been fixed.
 - Ultrasonic reflections are angle-sensitive: flat surfaces facing the sensor reflect cleanly, while angled or irregular surfaces scatter the pulse and produce inconsistent readings.
 
 ## Future Improvements
