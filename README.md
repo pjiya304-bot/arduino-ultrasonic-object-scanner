@@ -1,5 +1,5 @@
 # Ultrasonic Object Scanner
-An Arduino based scanning system that uses an ultrasonic sensor mounted on a servo motor to sweep a field of view and detect object distance, size and speed at each angle - an early exercise in sensor-based ranging and embedded control, foundational is later work in RF/signal-based sensing systems.
+An Arduino based scanning system that uses an ultrasonic sensor mounted on a servo motor to sweep a field of view and detect object proximity, size and speed at each angle.
 
 ## Overview
 This project interfaces with an HC-SR04 ultrasonic sensor with a SG90 servo motor, controlled by an Arduino Uno. the servo sweeps across a fixed angular range while the sensor measures distance at each step using pulse-echo timing, producing an angular distance map - the same core time-of-flight ranging principle used in radar and lidar systems, applied here at a small, accessible scale. 
@@ -9,7 +9,7 @@ This project interfaces with an HC-SR04 ultrasonic sensor with a SG90 servo moto
 | Arduino Uno | Microcontroller - controls servo, reads sensor, runs detection logic |
 | HC-SR04 Ultrasonic Sensor | Emits ultrasonic pulse, measures echo return time |
 | SG90 Servo Motor | Sweeps sensor across the scan angle |
-| Jumper wire | Circuit connections |
+| Jumper wires | Circuit connections |
 
 ## Hardware Setup
 
@@ -17,11 +17,26 @@ This project interfaces with an HC-SR04 ultrasonic sensor with a SG90 servo moto
 ![Wiring closeup](media/wiring-closeup.jpg)
 
 ## How It Works
-1. The servo sweeps from 0 degrees to 180 degrees in fixed steps, then back, continously.
+1. The servo sweeps from 0 degrees to 180 degrees in 5 degree steps, then back, continuously.
 2. At each scan step, the ultrasonic sensor emits a pulse and measures echo return time.
 3. **Distance** is calculated from echo time using speed of sound: 'distance = (duration x 0.0343) / 2'.
-4. **Proximity Category** (NEAR/MID/FAR0 is assigned based on distance thresholds - this is a simple proximity classification, not a true measurement of object size.
-5. **Speed** is estimated by comparing distance readings between succesive scan steps, divided by the time interval between them.
+4. **Proximity Category** (NEAR/MID/FAR) is assigned from distance thresholds - under 20cm is NEAR, under 50cm is MID and anything above is FAR. 
+5. **Apparent Speed** is calculated from change in distance between successive scan steps, divided by the time between them. Because each step is at a different angle, this is not the true velocity of a moving object.
+6. **No Echo** if no echo is received within 30ms timeout, the reading is marked 'NO ECHO' and the previous distance is reused.
+
+The scan interval ('scanDelay', 500 ms) and the angular step ('step', 5 degree) can be changed in the code. With the current settings, one 0 to 180 degree sweep takes about 18 seconds.
+
+## Sample Serial Output
+
+Angle: 155° | Distance: 15 cm | Proximity: NEAR | Speed: -2.00 cm/s
+Angle: 160° | Distance: 16 cm | Proximity: NEAR | Speed: 2.00 cm/s
+Angle: 165° | Distance: 15 cm | Proximity: NEAR | Speed: -2.00 cm/s
+Angle: 170° | Distance: 15 cm | Proximity: NEAR | Speed: 0.00 cm/s
+Angle: 175° | Distance: 20 cm | Proximity: MID | Speed: 10.00 cm/s
+Angle: 180° | Distance: 46 cm | Proximity: MID | Speed: 52.00 cm/s
+Angle: 175° | Distance: 58 cm | Proximity: FAR | Speed: 24.00 cm/s
+Angle: 170° | Distance: 59 cm | Proximity: FAR | Speed: 2.00 cm/s
+Angle: 165° | Distance: 60 cm | Proximity: FAR | Speed: 2.00 cm/s
 
 ## Code
 Full code: ['src/scan.ino'](src/scan.ino)
@@ -32,17 +47,16 @@ Core functions:
 - 'loop()' - drives the servo sweep and runs detection logic once per scan interval 
 
 ## Limitations and Observations
-Distance detection works reliably and consistently. A few things worth noting;
-- **Proximity, not size:** the current version classifies objects into NEAR/MID/FAR bands based on the distance fromthe sensor - it doesnot measure actual physical size. A true size estimate would require tracking angular span across a sweep (i.e. how many consecutive angles detect the same object), which is a planned future improvement rather than a current feature.
-- **Timing bug found and fixed:** an earlier version of the loop had a scoping error where the scan-interval check ('scanDelay') wasn't actually gating the sweep/measurement logic, causing readings to run on every loop iteration instead of at the intended interval - this was corrupting speed calculations, since the speed was being divided by an assumed 4-second interval that wasn't the real time between readings. This has since been fixed.
-- Ultrasonic reflections are angle-sensitive: flat surfaces facing the sensor reflect cleanly, while angled or irregular surfaces scatter the pulse and produce inconsistent readings.
+Distance readings were stable on flat surfaces facing the sensor (for example, 36 to 37 cm across 100 to 120 degree in one test run). A few things are worth noting: 
+1. **Proximity, not size:** objects are classified by distance only. A true size estimate would require tracking angular span across a sweep, which is a planned improvement.
+2. **Speed is not real velocity:** large values come from the sensor seeing a different object at the new angle. For example, '52.00 cm/s' between 175 and 180 degrees was the sensor turning from a surface at 20 cm to one at 46 cm.
+3. **Sensor range:** the HC-SR04 is rated for roughly 2 to 400 cm. Very close readings (such as 2 cm at 30 degree) are unreliable.
+4. **Reflections are angle sensitive:** flat surfaces reflect cleanly, while angled or irregular surfaces scatter the pulse. In a cluttered room, neighbouring angles often return very different distances.
+5. **Bugs found and fixed:** a scoping error let readings run on every loop instead of at 'scanDelay', and unsigned variables made decreasing distances wrap to huge speeds (such as '16382.25 cm/s). Using signed integers fixed the second one.
 
 ## Future Improvements
-- Implement true object-size estimation using angular span tracking across a sweep
-- Add a real-time visual scan display (e.g. Processing or a small OLED)
-- Increase angular resolution with finer servo steps
-- Compare against alternative sensing method for accuracy benchmarking
-
-
-
-
+1. Implement true object-size estimation using angular span tracking across a sweep.
+2. Measure real object speed using repeated readings at a fixed angle.
+3. Add a real-time visual scan display (e.g. Processing or a small OLED)
+4. Increase angular resolution with finer servo steps.
+5. Smooth noisy readings by averaging several measurements per angle.
