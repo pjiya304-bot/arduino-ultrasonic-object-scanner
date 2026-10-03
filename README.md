@@ -1,5 +1,5 @@
 # Ultrasonic Object Scanner
-An Arduino based scanning system that uses an ultrasonic sensor mounted on a servo motor to sweep a field of view and detect object proximity, size and speed at each angle.
+An Arduino based scanning system that uses an ultrasonic sensor mounted on a servo motor to sweep a field of view and report distance, a proximity category and an apparent speed value at each angle.
 
 ## Overview
 This project interfaces with an HC-SR04 ultrasonic sensor with a SG90 servo motor, controlled by an Arduino Uno. the servo sweeps across a fixed angular range while the sensor measures distance at each step using pulse-echo timing, producing an angular distance map - the same core time-of-flight ranging principle used in radar and lidar systems, applied here at a small, accessible scale. 
@@ -16,6 +16,14 @@ This project interfaces with an HC-SR04 ultrasonic sensor with a SG90 servo moto
 
 ![Full setup](media/full-setup.jpg)
 ![Wiring closeup](media/wiring-closeup.jpg)
+![
+| Component | Pin | Arduino Pin |
+|---|---|
+| Servo | Signal | D9 |
+| HC-SR04 | TRIG | D10 |
+| HC-SR04 | ECHO | D11 |
+| HC-SR04 & Servo | VCC | 5V |
+| HC-SR04 & Servo | GND | GND |
 
 ## How It Works
 1. The servo sweeps from 0 degrees to 180 degrees in 5 degree steps, then back, continuously.
@@ -48,10 +56,10 @@ Core functions:
 - 'loop()' - drives the servo sweep and runs detection logic once per scan interval 
 
 ## Limitations and Observations
-Distance readings were stable on flat surfaces facing the sensor (for example, 36 to 37 cm across 100 to 120 degree in one test run). A few things are worth noting: 
+Distance readings were stable on flat surfaces facing the sensor. A few things are worth noting: 
 1. **Proximity, not size:** Objects are classified by distance only. A true size estimate would require tracking angular span across a sweep, which is a planned improvement.
 2. **Speed is not real velocity:** Large values come from the sensor seeing a different object at the new angle. For example, '52.00 cm/s' between 175 and 180 degrees was the sensor turning from a surface at 20 cm to one at 46 cm.
-3. **Sensor range:** The HC-SR04 is rated for roughly 2 to 400 cm. Very close readings (such as 2 cm at 30 degree) are unreliable.
+3. **Sensor range:** The HC-SR04 is rated for roughly 2 to 400 cm. Very close readings (such as 2 cm to 3 cm) are unreliable.
 4. **Reflections are angle sensitive:** Flat surfaces reflect cleanly, while angled or irregular surfaces scatter the pulse. In a cluttered room, neighbouring angles often return very different distances.
 5. **Bugs found and fixed:** A scoping error let readings run on every loop instead of at 'scanDelay', and unsigned variables made decreasing distances wrap to huge speeds (such as '16382.25 cm/s). Using signed integers fixed the second one.
 
