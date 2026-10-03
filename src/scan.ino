@@ -65,11 +65,10 @@ void loop() {
     // Measure distance
     bool noEcho = false;
     distance = getDistance();
-    if (distance == 0) {
+    if (distance == 0) {         // no echo received
       noEcho = true;
-      distance = lastDistance;
+      distance = lastDistance;  // reuse the previous reading
     }
-      // ignore zero readings
 
     // Speed calculation (cm/s)
     float speed = 0;
