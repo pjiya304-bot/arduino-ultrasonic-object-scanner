@@ -49,6 +49,7 @@ Angle: 175° | Distance: 58 cm | Proximity: FAR | Speed: 24.00 cm/s
 Angle: 170° | Distance: 59 cm | Proximity: FAR | Speed: 2.00 cm/s
 Angle: 165° | Distance: 60 cm | Proximity: FAR | Speed: 2.00 cm/s
 ```
+A negative speed means distance decreased since the last step.
 ## Code
 Full code: [`src/scan.ino`](src/scan.ino)
 
@@ -70,4 +71,4 @@ Distance readings were stable on flat surfaces facing the sensor. A few things a
 2. Measure real object speed using repeated readings at a fixed angle.
 3. Add a real-time visual scan display (e.g. Processing or a small OLED)
 4. Increase angular resolution with finer servo steps.
-5. Smoothen noisy readings by averaging several measurements per angle.
+5. Smooth noisy readings by averaging several measurements per angle.
