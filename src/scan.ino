@@ -20,7 +20,7 @@ unsigned int distance;
 void setup() {
   Serial.begin(9600);
   myServo.attach(servoPin);
-  pinMode(trigPin, OUTPUT); // OUTPUT because it send out the signal
+  pinMode(trigPin, OUTPUT); // OUTPUT because it sends out the signal
   pinMode(echoPin, INPUT); // INPUT because it receives the signal
   Serial.println("---- Arduino Ultrasonic Object Scanner ----");
   Serial.println("Format: [Angle °] [Distance cm] [Proximity] [Speed cm/s]");
