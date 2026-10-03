@@ -2,7 +2,7 @@
 An Arduino based scanning system that uses an ultrasonic sensor mounted on a servo motor to sweep a field of view and report distance, a proximity category and an apparent speed value at each angle.
 
 ## Overview
-This project pairs an HC-SR04 ultrasonic sensor with a SG90 servo motor, controlled by an Arduino Uno. the servo sweeps across a fixed angular range while the sensor measures distance at each step using pulse-echo timing, producing an angular distance map - the same core time-of-flight ranging principle used in radar and lidar systems, applied here at a small, accessible scale. 
+This project pairs an HC-SR04 ultrasonic sensor with an SG90 servo motor, controlled by an Arduino Uno. The servo sweeps across a fixed angular range while the sensor measures distance at each step using pulse-echo timing, producing an angular distance map - the same core time-of-flight ranging principle used in sonar, radar and lidar systems, applied here at a small, accessible scale. 
 
 ## Components
 | Component | Purpose |
