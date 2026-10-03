@@ -60,4 +60,4 @@ Distance readings were stable on flat surfaces facing the sensor (for example, 3
 2. Measure real object speed using repeated readings at a fixed angle.
 3. Add a real-time visual scan display (e.g. Processing or a small OLED)
 4. Increase angular resolution with finer servo steps.
-5. Smooth noisy readings by averaging several measurements per angle.
+5. Smoothen noisy readings by averaging several measurements per angle.
