@@ -9,8 +9,7 @@ const int echoPin = 11;
 const int sweepStart = 0;
 const int sweepEnd = 180;
 const int step = 5;
-const unsigned long scanDelay = 500; // time taken to scan
-
+const unsigned long scanDelay = 500; // ms between scan steps
 int angle = 0;
 bool sweepForward = true; // the sensor will move from 0 degree to 180 degree, once it reaches there the statement will turn false and it will go back to 0 degree again 
 
