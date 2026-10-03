@@ -35,11 +35,11 @@ long getDistance() {
   delayMicroseconds(10);
   digitalWrite(trigPin, LOW);
 
-  long d = pulseIn(echoPin, HIGH);
-  return d * 0.034 / 2; // cm
+  long d = pulseIn(echoPin, HIGH, 30000);
+  return d * 0.0343 / 2; // cm
 }
 // Object Size
-String proximity = getProximityCategory(int dist) {
+String getProximityCategory(int dist) {
   if (dist < 20) return "NEAR";
   else if (dist < 50) return "MID";
   else return "FAR";
@@ -70,17 +70,17 @@ void loop() {
     // Speed calculation (cm/s)
     float speed = 0;
     if (lastDistance > 0) {
-      speed = (distance - lastDistance) / (scanDelay / 1000.0); // distance change per second
+      speed = ((int)distance - (int)lastDistance) / (scanDelay / 1000.0); // distance change per second
     }
     lastDistance = distance;
 
-    // Object size
-    String size = getObjectSize(distance);
+    // Object proximity
+    String proximity = getProximityCategory(distance);
 
     // Print in clear format
     Serial.print("Angle: "); Serial.print(angle); Serial.print("° | ");
     Serial.print("Distance: "); Serial.print(distance); Serial.print(" cm | ");
-    Serial.print("Proximity: "); Serial.print(Proximity); Serial.print(" | ");
+    Serial.print("Proximity: "); Serial.print(proximity); Serial.print(" | ");
     Serial.print("Speed: "); Serial.print(speed, 2); Serial.println(" cm/s");
   }
 }
