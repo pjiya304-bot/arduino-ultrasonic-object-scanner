@@ -16,7 +16,7 @@ This project interfaces with an HC-SR04 ultrasonic sensor with a SG90 servo moto
 
 ![Full setup](media/full-setup.jpg)
 ![Wiring closeup](media/wiring-closeup.jpg)
-![
+![Circuit_diagram](media/Circuit diagram.png)
 | Component | Pin | Arduino Pin |
 |---|---|
 | Servo | Signal | D9 |
