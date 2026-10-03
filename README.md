@@ -28,7 +28,7 @@ This project interfaces with an HC-SR04 ultrasonic sensor with a SG90 servo moto
 The scan interval ('scanDelay', 500 ms) and the angular step ('step', 5 degree) can be changed in the code. With the current settings, one 0 to 180 degree sweep takes about 18 seconds.
 
 ## Sample Serial Output
-|---|---|
+```
 Angle: 155° | Distance: 15 cm | Proximity: NEAR | Speed: -2.00 cm/s
 Angle: 160° | Distance: 16 cm | Proximity: NEAR | Speed: 2.00 cm/s
 Angle: 165° | Distance: 15 cm | Proximity: NEAR | Speed: -2.00 cm/s
@@ -38,7 +38,7 @@ Angle: 180° | Distance: 46 cm | Proximity: MID | Speed: 52.00 cm/s
 Angle: 175° | Distance: 58 cm | Proximity: FAR | Speed: 24.00 cm/s
 Angle: 170° | Distance: 59 cm | Proximity: FAR | Speed: 2.00 cm/s
 Angle: 165° | Distance: 60 cm | Proximity: FAR | Speed: 2.00 cm/s
-
+```
 ## Code
 Full code: ['src/scan.ino'](src/scan.ino)
 
