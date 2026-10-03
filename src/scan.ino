@@ -16,15 +16,14 @@ bool sweepForward = true; // the sensor will move from 0 degree to 180 degree, o
 
 unsigned long lastTime = 0;
 unsigned int lastDistance = 0;
-unsigned long duration;
 unsigned int distance;
 
 void setup() {
   Serial.begin(9600);
-  myServo.attach(9);
+  myServo.attach(servoPin);
   pinMode(trigPin, OUTPUT); // OUTPUT because it send out the signal
   pinMode(echoPin, INPUT); // INPUT because it recieves the signal
-  Serial.println("---- Arduino Radar System ----");
+  Serial.println("---- Arduino Ultrasonic Object Scanner ----");
   Serial.println("Format: [Angle °] [Distance cm] [Proximity] [Speed cm/s]");
 }
 
@@ -38,7 +37,7 @@ long getDistance() {
   long d = pulseIn(echoPin, HIGH, 30000);
   return d * 0.0343 / 2; // cm
 }
-// Object Size
+// Object Proximity
 String getProximityCategory(int dist) {
   if (dist < 20) return "NEAR";
   else if (dist < 50) return "MID";
