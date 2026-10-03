@@ -12,7 +12,7 @@ const int step = 5;
 const unsigned long scanDelay = 4000; // time taken to scan
 
 int angle = 0;
-bool sweepForward = true; // the sensor will move from 0 degree to 180 degree, once it reaches there the stament will turn false and it will go back to 0 degree again 
+bool sweepForward = true; // the sensor will move from 0 degree to 180 degree, once it reaches there the statement will turn false and it will go back to 0 degree again 
 
 unsigned long lastTime = 0;
 unsigned int lastDistance = 0;
@@ -22,7 +22,7 @@ void setup() {
   Serial.begin(9600);
   myServo.attach(servoPin);
   pinMode(trigPin, OUTPUT); // OUTPUT because it send out the signal
-  pinMode(echoPin, INPUT); // INPUT because it recieves the signal
+  pinMode(echoPin, INPUT); // INPUT because it receives the signal
   Serial.println("---- Arduino Ultrasonic Object Scanner ----");
   Serial.println("Format: [Angle °] [Distance cm] [Proximity] [Speed cm/s]");
 }
@@ -63,8 +63,13 @@ void loop() {
     myServo.write(angle);
 
     // Measure distance
+    bool noEcho = false;
     distance = getDistance();
-    if (distance == 0) distance = lastDistance; // ignore zero readings
+    if (distance == 0) {
+      noEcho = true;
+      distance = lastDistance;
+    }
+      // ignore zero readings
 
     // Speed calculation (cm/s)
     float speed = 0;
@@ -74,7 +79,7 @@ void loop() {
     lastDistance = distance;
 
     // Object proximity
-    String proximity = getProximityCategory(distance);
+    String proximity = noEcho ? "NO ECHO" : getProximityCategory(distance);
 
     // Print in clear format
     Serial.print("Angle: "); Serial.print(angle); Serial.print("° | ");
